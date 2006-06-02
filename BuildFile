@@ -1,5 +1,0 @@
-<use name=DataFormats/RecoCandidate>
-<export>
- <lib name=DataFormatsEgammaCandidates>
- <use name=DataFormats/RecoCandidate>
-</export>
