@@ -24,9 +24,8 @@ bool Photon::overlap( const Candidate & c ) const {
 
 void Photon::setVertex(const Point & vertex) {
   math::XYZVector direction = caloPosition() - vertex;
-  double energy = this->energy();
-  math::XYZVector momentum = direction.unit() * energy;
-  p4_.SetXYZT(momentum.x(), momentum.y(), momentum.z(), energy );
+  math::XYZVector momentum = direction.unit() * superCluster()->energy();
+  p4_.SetXYZT(momentum.x(), momentum.y(), momentum.z(), superCluster()->energy() );
   vertex_ = vertex;
 }
 

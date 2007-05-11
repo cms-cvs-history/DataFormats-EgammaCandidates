@@ -13,58 +13,37 @@
 #include "DataFormats/EgammaCandidates/interface/ConvertedPhotonFwd.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
-#include "DataFormats/GeometryVector/interface/GlobalVector.h"
-#include "DataFormats/GeometryVector/interface/GlobalPoint.h"
 
 namespace reco {
     class ConvertedPhoton : public RecoCandidate {
   public:
     /// default constructor
     ConvertedPhoton() : RecoCandidate() { }
-  
-    ConvertedPhoton( const reco::SuperClusterRef sc, 
-                     const std::vector<reco::TrackRef> tr, 
-                     Charge q, const LorentzVector & p4, double r9,
-                     const std::vector<math::XYZPoint> a , 
-		     const Point & vtx, const Point & convVtx );
+
+   ConvertedPhoton( Charge q, const LorentzVector & p4, const Point & vtx = Point( 0, 0, 0 ), const Point & convVtx = Point( 0, 0, 0 ) ):  RecoCandidate( q, p4, vtx ), theConversionVertex_(convVtx) { }
+
     /// destructor
     virtual ~ConvertedPhoton();
     /// returns a clone of the candidate
     ConvertedPhoton * clone() const;
     /// reference to a SuperCluster
     reco::SuperClusterRef superCluster() const ;
+    /// set refrence to ConvertedPhoton component
+    void setSuperCluster( const reco::SuperClusterRef & r ) { superCluster_ = r; }
 
-    /// vector of references to  tracks
+
+    // set reference to a pair of Tracks
+    //    void setTrackPairRef( const reco::TrackRefVector & pair ) { tracks_ = pair; }
+    void setTrackPairRef( const  std::vector<reco::TrackRef>  & pair ) { tracks_ = pair; }
+    // reference to a vector of tracks
+    // reco::TrackRefVector tracks() const ;  
     std::vector<reco::TrackRef> tracks() const ; 
-    /// reference to one of multiple Tracks: implements the method inherited from RecoCandidate
-    reco::TrackRef track( size_t ) const;
-    /// Bool flagging objects having track size >0
-    bool isConverted() const;
-    /// Number of tracks= 0,1,2
-    unsigned int nTracks() const {return  tracks().size(); }
-    /// if nTracks=2 returns the pair invariant mass
-    double pairInvariantMass() const {return invMass_;}
-    /// Delta cot(Theta) where Theta is the angle in the (y,z) plane between the two tracks 
-    double pairCotThetaSeparation() const {return dCotTheta_;}
-    /// Conversion tracks momentum 
-    GlobalVector  pairMomentum() const {return momTracks_;}
-    /// Phi  
-    double pairMomentumPhi() const {return  phiTracks_;}
-    /// Eta 
-    double pairMomentumEta() const {return etaTracks_;}
-    /// Pt from tracks divided by the super cluster transverse energy
-    double pairPtOverEtSC() const {return ptOverEtSC_;}
-    /// Super Cluster energy divided by tracks momentum
-    double EoverP() const {return ep_;}
-    /// ratio of E(3x3)/ESC
-    double r9() const { return r9_; }
-    /// returns the position of the conversion vertex
-    const Point & convVertexPosition() const { return theConversionVertex_ ; }
-    /// positions of the track extrapolation at the ECAL front face
-    std::vector<math::XYZPoint> ecalImpactPosition() const {return thePositionAtEcal_;} 
-    /// set primary event vertex used to define photon direction
-    void setVertex(const Point & vertex);
+    // returns the position of the conversion vertex
 
+
+
+
+    const Point & convVertexPosition() const { return theConversionVertex_ ; }
 
   private:
     /// check overlap with another candidate
@@ -73,32 +52,9 @@ namespace reco {
 
     /// reference to a SuperCluster
     reco::SuperClusterRef superCluster_;
-    /// reference to a vector Track references
+    //    reco::TrackRefVector  tracks_;
     std::vector<reco::TrackRef>  tracks_;
-    double r9_;
     reco::Particle::Point theConversionVertex_;
-    std::vector<math::XYZPoint>  thePositionAtEcal_;
-
-
-
-    void makePairInvariantMass() ;
-    void makePairCotThetaSeparation();
-    void makePairMomentum() ;
-    void makePairMomentumEta() ;
-    void makePairMomentumPhi() ;
-    void makePairPtOverEtSC() ;
-    void makeEoverP() ;
-
-
-    double invMass_;
-    double dCotTheta_;
-    double etaTracks_;
-    double phiTracks_;
-    GlobalVector  momTracks_;
-    double ptOverEtSC_;
-    double ep_;
-
-
 
   };
   

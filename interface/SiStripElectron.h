@@ -56,7 +56,7 @@ namespace reco {
 		    unsigned int numberOfBarrelRphiHits,
 		    unsigned int numberOfEndcapZphiHits)
       : RecoCandidate(q, LorentzVector(pt*cos(phiAtOrigin), pt*sin(phiAtOrigin), pz, 
-				       sqrt( pt*pt + pz*pz + 0.000510*0.000510)), Point(0,0,0), -11 * q )
+				       sqrt( pt*pt + pz*pz + 0.000510*0.000510)), Point(0,0,0) /*, -11 * q */ )
 	, superCluster_(superCluster)
       , rphiRecHits_(rphiRecHits)
       , stereoRecHits_(stereoRecHits)
@@ -74,7 +74,7 @@ namespace reco {
     
     /// copy constructor (update in SiStripElectron.cc)
     SiStripElectron(const SiStripElectron& rhs)
-      : RecoCandidate(rhs)
+      : RecoCandidate(rhs.charge(), rhs.p4(), rhs.vertex())
       , superCluster_(rhs.superCluster())
       , rphiRecHits_(rhs.rphiRecHits())
       , stereoRecHits_(rhs.stereoRecHits())
@@ -92,7 +92,7 @@ namespace reco {
     
     /// constructor from RecoCandidate
     SiStripElectron( Charge q, const LorentzVector & p4, const Point & vtx = Point( 0, 0, 0 ) ) : 
-      RecoCandidate( q, p4, vtx, -11 * q ) { }
+      RecoCandidate( q, p4, vtx ) { }
     /// destructor
     virtual ~SiStripElectron();
     /// returns a clone of the candidate
@@ -131,6 +131,7 @@ namespace reco {
     /// returns number of endcap zphi hits in phi band
     unsigned int numberOfEndcapZphiHits() const { return numberOfEndcapZphiHits_; }
 
+    int pdgId() const { return -11 * charge(); }
   private:
     /// check overlap with another candidate
     virtual bool overlap( const Candidate & ) const;
