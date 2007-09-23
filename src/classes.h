@@ -1,5 +1,5 @@
 //
-// $Id: classes.h,v 1.15 2007/01/05 00:19:30 wmtan Exp $
+// $Id: classes.h,v 1.16 2007/06/08 13:47:58 llista Exp $
 //
 #include "DataFormats/Common/interface/Wrapper.h"
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
@@ -10,6 +10,9 @@
 #include "DataFormats/EgammaCandidates/interface/SiStripElectron.h"
 #include "DataFormats/EgammaCandidates/interface/PhotonIsolationAssociation.h"
 #include "DataFormats/EgammaCandidates/interface/ElectronIsolationAssociation.h"
+#include "DataFormats/EgammaCandidates/interface/PMGsfElectronIsoCollection.h"
+#include "DataFormats/EgammaCandidates/interface/PMGsfElectronIsoNumCollection.h"
+#include "DataFormats/EgammaCandidates/interface/PhotonPi0DiscriminatorAssociation.h"
 #include "DataFormats/Common/interface/RefToBase.h"
 #include "DataFormats/Common/interface/AssociationMap.h"
 
@@ -60,6 +63,25 @@ namespace {
     edm::Wrapper<reco::ElectronIsolationMap> w7;
     edm::helpers::Key<edm::RefProd<reco::ElectronCollection > > h7;
 
+    reco::PMGsfElectronIsoCollectionBase b8;
+    reco::PMGsfElectronIsoCollection v8;
+    reco::PMGsfElectronIsoCollectionRef r8;
+    reco::PMGsfElectronIsoCollectionRefProd rp8;
+    reco::PMGsfElectronIsoCollectionRefVector rv8;
+    
+    edm::Wrapper<reco::PMGsfElectronIsoCollection> w8;
+
+    reco::PMGsfElectronIsoNumCollectionBase b9;
+    reco::PMGsfElectronIsoNumCollection v9;
+    reco::PMGsfElectronIsoNumCollectionRef r9;
+    reco::PMGsfElectronIsoNumCollectionRefProd rp9;
+    reco::PMGsfElectronIsoNumCollectionRefVector rv9;
+    
+    edm::Wrapper<reco::PMGsfElectronIsoNumCollection> w9;
+
+    reco::PhotonPi0DiscriminatorAssociationMap v10;
+    edm::Wrapper<reco::PhotonPi0DiscriminatorAssociationMap> w10;
+    edm::helpers::Key<edm::RefProd<reco::PhotonCollection > > h10;
 
     edm::reftobase::Holder<reco::Candidate, reco::ElectronRef> rb1;
     edm::reftobase::Holder<reco::Candidate, reco::PhotonRef> rb2;
