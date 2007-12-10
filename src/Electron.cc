@@ -1,27 +1,19 @@
-// $Id: ElectronCandidate.cc,v 1.5 2006/05/31 12:57:40 llista Exp $
+// $Id: Electron.cc,v 1.4 2006/01/30 13:53:41 llista Exp $
 #include "DataFormats/EgammaCandidates/interface/Electron.h"
-
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/EgammaReco/interface/SuperCluster.h"
 using namespace reco;
 
-Electron::~Electron() { }
-
-Electron * Electron::clone() const { 
-  return new Electron( * this ); 
+Electron::Electron( const Vector & calo, const Vector & track, short charge,
+		    double eHadOverEcal, short isolation, short pixelLines ) :
+  caloMomentum_( calo ), trackMomentum_( track ), charge_( charge ),
+  eHadOverEcal_( eHadOverEcal ), isolation_( isolation ), pixelLines_( pixelLines ) {
 }
 
-TrackRef Electron::track() const {
-  return track_;
+Electron::Electron( const SuperClusterRef & calo, TrackRef track,
+		    double eHadOverEcal, short isolation, short pixelLines ) :
+  caloMomentum_( calo->momentum() ), trackMomentum_( track->momentum() ),
+  eHadOverEcal_( eHadOverEcal ), isolation_( isolation ), pixelLines_( pixelLines ),
+  superCluster_( calo ), track_( track ) {
 }
 
-SuperClusterRef Electron::superCluster() const {
-  return superCluster_;
-}
-
-bool Electron::overlap( const Candidate & c ) const {
-  const RecoCandidate * o = dynamic_cast<const RecoCandidate *>( & c );
-  return ( o != 0 && 
-	   ( checkOverlap( track(), o->track() ) ||
-	     checkOverlap( superCluster(), o->superCluster() ) ) 
-	   );
-  return false;
-}

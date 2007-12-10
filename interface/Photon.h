@@ -1,79 +1,77 @@
-#ifndef EgammaCandidates_Photon_h
-#define EgammaCandidates_Photon_h
-/** \class reco::Photon 
- *
- * Reco Candidates with an Photon component
+#ifndef EgammaReco_Photon_h
+#define EgammaReco_Photon_h
+/** \class reco::Photon
+ *  
+ * Reconstructed Photon with reference
+ * to a SuperCluster
  *
  * \author Luca Lista, INFN
  *
- * \version $Id: Photon.h,v 1.15 2007/12/07 19:16:39 nancy Exp $
+ * \version $Id: Photon.h,v 1.7 2006/03/08 11:16:35 llista Exp $
  *
  */
-#include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
-#include "DataFormats/EgammaReco/interface/ClusterShapeFwd.h" 
-#include "DataFormats/EgammaReco/interface/ClusterShape.h" 
-#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
-#include "DataFormats/EgammaReco/interface/SuperCluster.h"
+#include <Rtypes.h>
+#include "DataFormats/Math/interface/Vector3D.h"
+#include "DataFormats/EgammaReco/interface/SuperClusterFwd.h"
+#include "DataFormats/EgammaCandidates/interface/PhotonFwd.h"
 
 namespace reco {
-
-  class Photon : public RecoCandidate {
+  class Photon {
   public:
+    /// spatial vector
+    typedef math::RhoEtaPhiVector Vector;
     /// default constructor
-    Photon() : RecoCandidate() { }
+    Photon() { }
     /// constructor from values
-    Photon( Charge q, const LorentzVector & p4, Point unconvPos, 
-	    const SuperClusterRef scl,  const ClusterShapeRef shp, 
-	    bool hasPixelSeed=false, const Point & vtx = Point( 0, 0, 0 ) );
-    /// destructor
-    virtual ~Photon();
-    /// returns a clone of the candidate
-    virtual Photon * clone() const;
+    Photon( const Vector &,
+	    double z, short isolation, short pixelLines, bool hasSeed );
+    /// momentum vector
+    Vector momentum() const { return momentum_; }
+    /// energy
+    double energy() const { return momentum_.R(); }
+    /// tranverse momentum
+    double pt() const { return momentum_.Rho(); }
+    /// pseudorapidity
+    double eta() const { return momentum_.Eta(); }
+    /// azimuthal angle
+    double phi() const { return momentum_.Phi(); }
+    /// polar angle
+    double theta() const { return momentum_.Theta(); }
+    /// momentum magnitude
+    double p() const { return momentum_.R(); }
+    /// x coodrinate of momentum vector
+    double px() const { return momentum_.X(); }
+    /// y coodrinate of momentum vector
+    double py() const { return momentum_.Y(); }
+    /// z coodrinate of momentum vector
+    double pz() const { return momentum_.Z(); }
+    /// z coordinate of assumed vertex
+    double vtxZ() const { return vtxZ_; }
+    /// isolation (should be better documented!)
+    short isolation() const { return isolation_; }
+    /// pixel lines (should be better documented!)
+    short pixelLines() const { return pixelLines_; }
+    /// returns true if has a seed
+    bool hasSeed() const { return hasSeed_; }
     /// reference to SuperCluster
-    virtual reco::SuperClusterRef superCluster() const;
-    /// vector of references to  Conversion's
-    std::vector<reco::ConversionRef> conversions() const ; 
-     /// reference to ClusterShape for seed BasicCluster of SuperCluster
-    virtual reco::ClusterShapeRef seedClusterShape() const;
+    const SuperClusterRef & superCluster() const { return superCluster_; }
     /// set reference to SuperCluster
-    void setSuperCluster( const reco::SuperClusterRef & r ) { superCluster_ = r; }
-    /// add  single ConversionRef to the vector of Refs
-    void addConversion( const reco::ConversionRef & r ) { conversions_.push_back(r); }
-    //    void addConversion( const reco::ConvertedPhotonRef & r ) { conversions_.push_back(r); }
-    /// set reference to ClusterShape
-    void setClusterShapeRef( const reco::ClusterShapeRef & r ) { seedClusterShape_ = r; }
-      /// set primary event vertex used to define photon direction
-    void setVertex(const Point & vertex);
-    /// position in ECAL
-    math::XYZPoint caloPosition() const;
-    /// position of seed BasicCluster for shower depth of unconverted photon
-    math::XYZPoint unconvertedPosition() const { return unconvPosition_; }
-    /// ratio of E(3x3)/ESC
-    double r9() const { return   seedClusterShape_->e3x3()/(superCluster_->rawEnergy()+superCluster_->preshowerEnergy()); }
-    /// ratio of Emax/E(3x3)
-    double r19() const { return  seedClusterShape_->eMax()/seedClusterShape_->e3x3(); }
-    /// 5x5 energy
-    double e5x5() const { return seedClusterShape_->e5x5(); }
-    /// Whether or not the SuperCluster has a matched pixel seed
-    bool hasPixelSeed() const { return pixelSeed_; }
-    /// Bool flagging photons with a vector of refereces to conversions with size >0
-    bool isConverted() const;
+    void setSuperCluster( const SuperClusterRef & c ) { superCluster_ = c; }
 
   private:
-    /// check overlap with another candidate
-    virtual bool overlap( const Candidate & ) const;
-    /// position of seed BasicCluster for shower depth of unconverted photon
-    math::XYZPoint unconvPosition_;
-    /// reference to a SuperCluster
-    reco::SuperClusterRef superCluster_;
-    /// reference to ClusterShape for seed BasicCluster of SuperCluster
-    reco::ClusterShapeRef seedClusterShape_;
-    // vector of references to Conversions
-    std::vector<reco::ConversionRef>  conversions_;
-
-    bool pixelSeed_;
+    /// momentum vector
+    Vector momentum_;
+    ///  z coordinate of assumed vertex
+    Double32_t vtxZ_;
+    /// isolation (should be better documented!)
+    short isolation_;
+    /// pixel lines (should be better documented!)
+    short pixelLines_;
+    /// true if has a seed
+    bool hasSeed_;
+    /// reference to SuperCluster
+    SuperClusterRef superCluster_;
   };
-  
 }
 
 #endif
