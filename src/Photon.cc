@@ -1,13 +1,13 @@
-// $Id: Photon.cc,v 1.12 2007/12/10 19:06:03 nancy Exp $
+// $Id: Photon.cc,v 1.14 2008/03/03 20:34:38 nancy Exp $
 #include "DataFormats/EgammaCandidates/interface/Photon.h"
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h" 
 
 using namespace reco;
 
-Photon::Photon( Charge q, const LorentzVector & p4, Point unconvPos,
+Photon::Photon( const LorentzVector & p4, Point unconvPos,
 		const SuperClusterRef scl,   const ClusterShapeRef shp, 
 		double HoE, bool hasPixelSeed, const Point & vtx) : 
-    RecoCandidate( q, p4, vtx, 22 ), unconvPosition_( unconvPos ),
+    RecoCandidate( 0, p4, vtx, 22 ), unconvPosition_( unconvPos ),
     superCluster_(scl), seedClusterShape_( shp ),
     hadOverEm_(HoE), pixelSeed_( hasPixelSeed ) {}
 
@@ -64,4 +64,12 @@ math::XYZPoint Photon::caloPosition() const {
   } else {
     return superCluster()->position();
   }
+}
+
+bool Photon::isPhoton() const {
+  return true;
+}
+
+bool Photon::isConvertedPhoton() const {
+  return isConverted();
 }
