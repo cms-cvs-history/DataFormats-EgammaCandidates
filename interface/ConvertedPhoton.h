@@ -6,7 +6,7 @@
  *
  * \author N.Marinelli  University of Notre Dame, US
  *
- * \version $Id: ConvertedPhoton.h,v 1.8 2007/05/09 15:37:09 nancy Exp $
+ * \version $Id: ConvertedPhoton.h,v 1.11 2007/08/28 17:25:25 nancy Exp $
  *
  */
 #include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
@@ -35,7 +35,7 @@ namespace reco {
     reco::SuperClusterRef superCluster() const ;
 
     /// vector of references to  tracks
-    std::vector<reco::TrackRef> tracks() const ; 
+    virtual std::vector<reco::TrackRef> tracks() const ; 
     /// reference to one of multiple Tracks: implements the method inherited from RecoCandidate
     reco::TrackRef track( size_t ) const;
     /// Bool flagging objects having track size >0
