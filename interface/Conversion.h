@@ -6,7 +6,7 @@
  *
  * \author N.Marinelli  University of Notre Dame, US
  *
- * \version $Id: Conversion.h,v 1.15 2010/09/27 09:25:07 bendavid Exp $
+ * \version $Id: Conversion.h,v 1.18 2011/01/07 19:57:00 nancy Exp $
  *
  */
 
@@ -28,11 +28,13 @@ namespace reco {
 				ecalSeeded=1, 
 				trackerOnly=2, 
 				mixed=3, 
-				algoSize=4}; 
+                                pflow=4,
+				algoSize=5}; 
 
       enum ConversionQuality {generalTracksOnly=0, 
 			      arbitratedEcalSeeded=1, 
-			      arbitratedMerged=2, 
+			      arbitratedMerged=2,
+			      arbitratedMergedEcalGeneral=3,
 			      highPurity=8, 
 			      highEfficiency=9,
 			      ecalMatched1Track=10,
@@ -91,7 +93,7 @@ namespace reco {
       /// returns a clone of the candidate
       Conversion * clone() const;
       /// Pointer to CaloCluster (foe Egamma Conversions it points to  a SuperCluster)
-      reco::CaloClusterPtrVector caloCluster() const ;
+      reco::CaloClusterPtrVector caloCluster() const {return caloCluster_ ;}
       /// vector of track to base references 
       std::vector<edm::RefToBase<reco::Track> > tracks() const ; 
       /// returns  the reco conversion vertex
@@ -152,6 +154,9 @@ namespace reco {
       const std::vector<Measurement1DFloat> &dlClosestHitToVtx() const { return dlClosestHitToVtx_; }
       ///number of shared hits btw the two track
       uint8_t nSharedHits() const { return nSharedHits_; }
+
+      // Set the ptr to the Super cluster if not set in the constructor 
+      void setMatchingSuperCluster ( const  reco::CaloClusterPtrVector& sc) { caloCluster_= sc;}
       
       /// Conversion Track algorithm/provenance
       void setConversionAlgorithm(const ConversionAlgorithm a, bool set=true) { if (set) algorithm_=a; else algorithm_=undefined;}
