@@ -32,7 +32,7 @@ namespace reco
  * \author David Chamont  - Laboratoire Leprince-Ringuet - École polytechnique, CNRS/IN2P3
  * \author Ursula Berthon - Laboratoire Leprince-Ringuet - École polytechnique, CNRS/IN2P3
  *
- * \version $Id: GsfElectron.h,v 1.48 2011/03/03 22:04:53 chamont Exp $
+ * \version $Id: GsfElectron.h,v 1.48.2.1 2011/03/04 18:22:31 chamont Exp $
  *
  ****************************************************************************/
 
@@ -515,7 +515,7 @@ class GsfElectron : public RecoCandidate
 
     struct MvaOutput
      {
-      int status ; // to be defined
+      int status ; // see PFCandidateElectronExtra::StatusFlag
       float mva ;
       MvaOutput()
        : status(-1), mva(-999999999.)
