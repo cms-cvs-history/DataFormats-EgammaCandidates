@@ -32,8 +32,6 @@ namespace reco
  * \author David Chamont  - Laboratoire Leprince-Ringuet - École polytechnique, CNRS/IN2P3
  * \author Ursula Berthon - Laboratoire Leprince-Ringuet - École polytechnique, CNRS/IN2P3
  *
- * \version $Id: GsfElectron.h,v 1.48.2.1 2011/03/04 18:22:31 chamont Exp $
- *
  ****************************************************************************/
 
 class GsfElectron : public RecoCandidate
@@ -198,6 +196,18 @@ class GsfElectron : public RecoCandidate
       float deltaPhiEleClusterAtCalo ;  // the electron cluster phi - track phi position at calo extrapolated from the outermost track state
       float deltaPhiSuperClusterAtVtx ; // the supercluster phi - track phi position at calo extrapolated from the innermost track state
       float deltaPhiSeedClusterAtCalo ; // the seed cluster phi - track phi position at calo extrapolated from the outermost track state
+      TrackClusterMatching()
+       : eSuperClusterOverP(0.),
+         eSeedClusterOverP(0.),
+         eSeedClusterOverPout(0.),
+         eEleClusterOverPout(0.),
+         deltaEtaSuperClusterAtVtx(std::numeric_limits<float>::infinity()),
+         deltaEtaSeedClusterAtCalo(std::numeric_limits<float>::infinity()),
+         deltaEtaEleClusterAtCalo(std::numeric_limits<float>::infinity()),
+         deltaPhiEleClusterAtCalo(std::numeric_limits<float>::infinity()),
+         deltaPhiSuperClusterAtVtx(std::numeric_limits<float>::infinity()),
+         deltaPhiSeedClusterAtCalo(std::numeric_limits<float>::infinity())
+        {}
      } ;
 
     // accessors
